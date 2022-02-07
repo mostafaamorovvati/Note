@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinApiExtension
 
 @KoinApiExtension
-class AddViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddNavigator>() {
+class AddNoteViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddNoteNavigator>() {
 
     var saveNoteResult = MutableLiveData<Resource<Any>>()
 
@@ -24,6 +24,14 @@ class AddViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddNavig
                 saveNoteResult.postValue(Resource.error(e.message.toString(), null))
             }
         }
+    }
+
+    fun onBack(){
+        getNavigator()?.onBack()
+    }
+
+    fun onSave(){
+        getNavigator()?.onSave()
     }
 
 }

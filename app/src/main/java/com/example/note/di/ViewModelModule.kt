@@ -1,6 +1,7 @@
 package com.example.note.di
 
-import com.example.note.ui.add.AddViewModel
+import com.example.note.ui.add.AddNoteViewModel
+import com.example.note.ui.dialog.NoteDialogViewModel
 import com.example.note.ui.main.MainViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.component.KoinApiExtension
@@ -15,7 +16,11 @@ val viewModelModule = module {
    }
 
     viewModel {
-        AddViewModel(get())
+        AddNoteViewModel(get())
+    }
+
+    viewModel {
+        NoteDialogViewModel()
     }
 
 }

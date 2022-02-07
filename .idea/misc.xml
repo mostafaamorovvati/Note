@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/drawable-v21/background_ripple.xml" value="0.21927083333333333" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/drawable/background_ripple.xml" value="0.21927083333333333" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/drawable/bg_edt.xml" value="0.21927083333333333" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/drawable/bg_edt_selected.xml" value="0.21927083333333333" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/drawable/edt_selector.xml" value="0.21927083333333333" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/drawable/icarrow_back.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/layout/activity_add.xml" value="0.203125" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/layout/activity_add_note.xml" value="0.25" />
         <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/layout/activity_main.xml" value="0.203125" />
+        <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/layout/note_dialog_layout.xml" value="0.203125" />
         <entry key="..\:/Users/G12/AndroidStudioProjects/Note/app/src/main/res/layout/note_item_layout.xml" value="0.33" />
       </map>
     </option>

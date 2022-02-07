@@ -6,6 +6,7 @@ import com.example.mvvmproject.utils.Status
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.databinding.ActivityMainBinding
+import com.example.note.ui.add.AddNoteActivity
 import com.example.note.ui.base.BaseActivity
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -61,7 +62,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 
 
     override fun openAddNotePage() {
-
+        startActivity(AddNoteActivity.openActivity(this))
     }
 
 }

@@ -12,7 +12,7 @@ interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveNote(note: Note)
 
-    @Query("SELECT * FROM note_table")
+    @Query("SELECT * FROM note_table ORDER BY `id` DESC")
     suspend fun getNotes(): List<Note>
 
 }
