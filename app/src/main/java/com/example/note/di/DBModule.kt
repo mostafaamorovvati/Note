@@ -2,6 +2,8 @@ package com.example.note.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.note.data.local.room.db.DBHelper
+import com.example.note.data.local.room.db.IDBHelper
 import com.example.note.data.local.room.db.NoteDataBase
 import com.example.note.utils.DATABASE_NAME
 import org.koin.android.ext.koin.androidApplication
@@ -16,6 +18,10 @@ val dataBaseModule = module {
     }
 
     single { provideDatabase(androidApplication()) }
+
+    single<IDBHelper> {
+        DBHelper(get())
+    }
 
 
 }

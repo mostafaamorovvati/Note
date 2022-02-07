@@ -6,4 +6,6 @@ interface IDBHelper {
 
     suspend fun saveNote(note: Note)
 
+    suspend fun getNotes(): List<Note>
+
 }

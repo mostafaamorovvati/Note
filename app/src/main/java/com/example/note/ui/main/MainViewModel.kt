@@ -1,0 +1,50 @@
+package com.example.note.ui.main
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.example.mvvmproject.utils.Resource
+import com.example.note.data.local.room.entities.Note
+import com.example.note.data.repository.MainRepository
+import com.example.note.ui.base.BaseViewModel
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinApiExtension
+
+@KoinApiExtension
+class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNavigator>() {
+
+    var saveNoteResult = MutableLiveData<Resource<Any>>()
+    var notes = MutableLiveData<Resource<List<Note>>>()
+
+    init {
+        getNotes()
+    }
+
+    fun saveNote(note: Note) {
+        saveNoteResult.postValue(Resource.loading(null))
+        viewModelScope.launch {
+            try {
+                repo.saveNote(note)
+                saveNoteResult.postValue(Resource.success(null))
+            } catch (e: Exception) {
+                saveNoteResult.postValue(Resource.error(e.message.toString(), null))
+            }
+        }
+    }
+
+
+    private fun getNotes() {
+        notes.postValue(Resource.loading(null))
+        viewModelScope.launch {
+            try {
+                val note = repo.getNotes()
+                if (note.isNullOrEmpty()) {
+                    Resource.error("list is null or empty", null)
+                } else
+                    notes.postValue(Resource.success(note))
+            } catch (e: Exception) {
+                notes.postValue(Resource.error(e.message.toString(), null))
+            }
+        }
+    }
+
+}
