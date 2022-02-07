@@ -12,23 +12,11 @@ import org.koin.core.component.KoinApiExtension
 @KoinApiExtension
 class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNavigator>() {
 
-    var saveNoteResult = MutableLiveData<Resource<Any>>()
+
     var notes = MutableLiveData<Resource<List<Note>>>()
 
     init {
         getNotes()
-    }
-
-    fun saveNote(note: Note) {
-        saveNoteResult.postValue(Resource.loading(null))
-        viewModelScope.launch {
-            try {
-                repo.saveNote(note)
-                saveNoteResult.postValue(Resource.success(null))
-            } catch (e: Exception) {
-                saveNoteResult.postValue(Resource.error(e.message.toString(), null))
-            }
-        }
     }
 
 
@@ -45,6 +33,10 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
                 notes.postValue(Resource.error(e.message.toString(), null))
             }
         }
+    }
+
+    fun openAddNotePage(){
+        getNavigator()?.openAddNotePage()
     }
 
 }

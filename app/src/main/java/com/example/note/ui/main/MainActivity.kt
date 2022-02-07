@@ -58,4 +58,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
     override fun getLayoutId() = R.layout.activity_main
 
     override fun getViewModel() = mViewModel
+
+
+    override fun openAddNotePage() {
+
+    }
+
 }
