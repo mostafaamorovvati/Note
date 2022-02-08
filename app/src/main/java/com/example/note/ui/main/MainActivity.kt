@@ -1,6 +1,7 @@
 package com.example.note.ui.main
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvvmproject.utils.Status
 import com.example.note.BR
@@ -8,6 +9,7 @@ import com.example.note.R
 import com.example.note.data.local.room.entities.Note
 import com.example.note.databinding.ActivityMainBinding
 import com.example.note.ui.add.AddNoteActivity
+import com.example.note.ui.add.AddNoteActivity.Companion.IS_NOTE_SAVED
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
@@ -18,11 +20,27 @@ import org.koin.core.component.KoinApiExtension
 @KoinApiExtension
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     MainNavigator,
-    NoteAdapter.OnItemLongClick {
+    NoteAdapter.OnItemClickListener {
 
     private val mNoteAdapter: NoteAdapter by inject()
     private val mViewModel: MainViewModel by viewModel()
     private lateinit var mBinding: ActivityMainBinding
+
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val data = it.data
+                if (data != null) {
+
+                    val isNoteSaved = data.getBooleanExtra(IS_NOTE_SAVED, false)
+
+                    if (isNoteSaved)
+                        mViewModel.getNotes()
+
+                }
+            }
+        }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,16 +86,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
 
     override fun openAddNotePage() {
-        startActivity(AddNoteActivity.openActivity(this))
+        activityResultLauncher.launch(AddNoteActivity.openActivity(this, null, false))
     }
 
-    override fun onLongClick(note: Note) {
-    NoteDialog(
+    override fun onItemClick(note: Note) {
+        activityResultLauncher.launch(AddNoteActivity.openActivity(this, note, true))
+    }
+
+
+    override fun onItemLongClick(note: Note) {
+        NoteDialog(
             "Are you sure delete the ${note.title}?",
             getString(R.string.delete_txt),
             object : NoteDialogNavigator {
                 override fun ok() {
                     mViewModel.deleteNote(note)
+                    mViewModel.getNotes()
                 }
 
                 override fun cancel() {
@@ -86,5 +110,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
         ).show(supportFragmentManager, "")
     }
+
 
 }

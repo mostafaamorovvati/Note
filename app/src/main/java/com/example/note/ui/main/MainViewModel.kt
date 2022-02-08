@@ -20,7 +20,7 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
     }
 
 
-    private fun getNotes() {
+    fun getNotes() {
         notes.postValue(Resource.loading(null))
         viewModelScope.launch {
             try {

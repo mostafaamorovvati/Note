@@ -8,6 +8,9 @@ interface IDBHelper {
 
     suspend fun getNotes(): List<Note>
 
+    suspend fun updateNote(note: Note)
+
     suspend fun deleteNote(note: Note)
+
 
 }

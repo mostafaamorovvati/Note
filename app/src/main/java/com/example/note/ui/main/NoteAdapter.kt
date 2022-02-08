@@ -11,7 +11,7 @@ import com.example.note.ui.base.BaseViewHolder
 class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     var notes: MutableList<Note> = mutableListOf()
-    var mListener: OnItemLongClick? = null
+    var mListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return MainViewHolder(
@@ -41,8 +41,12 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
             mBinding.noteItemViewModel = itemViewModel
             mBinding.executePendingBindings()
 
+            mBinding.root.setOnClickListener {
+                mListener?.onItemClick(notes[position])
+            }
+
             mBinding.root.setOnLongClickListener {
-                mListener?.onLongClick(notes[position])
+                mListener?.onItemLongClick(notes[position])
                 true
             }
         }
@@ -50,7 +54,8 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     }
 
-    interface OnItemLongClick {
-        fun onLongClick(note: Note)
+    interface OnItemClickListener {
+        fun onItemClick(note: Note)
+        fun onItemLongClick(note: Note)
     }
 }

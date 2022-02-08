@@ -5,4 +5,9 @@
     <string name="add_new_note_txt">Add new note</string>
     <string name="cancel_txt">cancel</string>
     <string name="delete_txt">Delete</string>
+    <string name="ok_txt">Ok</string>
+    <string name="exit_add_new_note_message_txt">Your note will not be saved if you exit</string>
+    <string name="fill_field_txt">Please fill title and content</string>
+    <string name="note_uodated_txt">Note updated</string>
+    <string name="note_saved_txt">Note saved</string>
 </resources>

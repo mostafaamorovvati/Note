@@ -22,6 +22,29 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
 
     private val mViewModel: AddNoteViewModel by viewModel()
     private lateinit var mBinding: ActivityAddNoteBinding
+    private var note: Note? = null
+    private var isUpdate = false
+
+
+    companion object {
+
+        const val IS_NOTE_SAVED = "is_note_saved"
+
+        private const val NOTE_KEY = "note_key"
+        private const val IS_UPDATE = "is_update"
+
+        fun openActivity(
+            activity: FragmentActivity,
+            note: Note?,
+            isUpdate: Boolean
+        ): Intent {
+            val intent = Intent(activity, AddNoteActivity::class.java)
+            intent.putExtra(NOTE_KEY, note)
+            intent.putExtra(IS_UPDATE, isUpdate)
+            return intent
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +52,21 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         mBinding = getViewDataBinding()
         mViewModel.setNavigator(this)
 
+        getExtras()
         saveNoteObserver()
+        updateNoteObserver()
+    }
+
+
+    private fun getExtras() {
+        if (intent != null) {
+            mBinding.apply {
+                note = intent.getParcelableExtra(NOTE_KEY)
+                edtTitle.setText(note?.title)
+                edtContent.setText(note?.content)
+                isUpdate = intent.getBooleanExtra(IS_UPDATE, false)
+            }
+        }
     }
 
     private fun saveNoteObserver() {
@@ -37,7 +74,8 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             it?.let {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        this@AddNoteActivity.toast("Note saved")
+                        this@AddNoteActivity.toast(getString(R.string.note_saved_txt))
+                        setResult()
                         finish()
                     }
                     Status.ERROR -> {
@@ -51,18 +89,38 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         })
     }
 
+    private fun updateNoteObserver() {
+        mViewModel.updateNoteResult.observe(this, {
+            it?.let {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        this@AddNoteActivity.toast(getString(R.string.note_uodated_txt))
+                        setResult()
+                        finish()
+                    }
+                    Status.ERROR -> {
+
+                    }
+                    Status.LOADING -> {
+
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setResult() {
+        val intent = Intent()
+        intent.putExtra(IS_NOTE_SAVED, true)
+        setResult(RESULT_OK, intent)
+    }
+
     override fun getBindingVariable() = BR.AddNoteViewModel
 
     override fun getLayoutId() = R.layout.activity_add_note
 
     override fun getViewModel() = mViewModel
 
-    companion object {
-        fun openActivity(activity: FragmentActivity): Intent {
-            val intent = Intent(activity, AddNoteActivity::class.java)
-            return intent
-        }
-    }
 
     override fun onBack() {
         exit()
@@ -73,7 +131,26 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
     }
 
     override fun onSave() {
-        saveNote()
+        if (isUpdate)
+            updateNote()
+        else
+            saveNote()
+    }
+
+    private fun updateNote() {
+        mBinding.apply {
+
+            if (edtTitle.text.isNullOrEmpty() || edtContent.text.isNullOrEmpty()) {
+                this@AddNoteActivity.toast(getString(R.string.fill_field_txt))
+                return
+            }
+
+            note?.title = edtTitle.text.toString().trim()
+            note?.content = edtContent.text.toString().trim()
+            note?.date = Date().toString()
+
+            note?.let { mViewModel.updateNote(it) }
+        }
     }
 
 
@@ -81,7 +158,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         mBinding.apply {
 
             if (edtTitle.text.isNullOrEmpty() || edtContent.text.isNullOrEmpty()) {
-                this@AddNoteActivity.toast("Please fill title and content")
+                this@AddNoteActivity.toast(getString(R.string.fill_field_txt))
                 return
             }
 
@@ -100,8 +177,8 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             return
         }
         NoteDialog(
-            "Your note will not be saved if you exit",
-            "Ok",
+            getString(R.string.exit_add_new_note_message_txt),
+            getString(R.string.ok_txt),
             object : NoteDialogNavigator {
 
                 override fun ok() {

@@ -13,6 +13,8 @@ import org.koin.core.component.KoinApiExtension
 class AddNoteViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddNoteNavigator>() {
 
     var saveNoteResult = MutableLiveData<Resource<Any>>()
+    var updateNoteResult = MutableLiveData<Resource<Any>>()
+
 
     fun saveNote(note: Note) {
         saveNoteResult.postValue(Resource.loading(null))
@@ -25,6 +27,20 @@ class AddNoteViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddN
             }
         }
     }
+
+
+    fun updateNote(note: Note) {
+        updateNoteResult.postValue(Resource.loading(null))
+        viewModelScope.launch {
+            try {
+                repo.updateNote(note)
+                updateNoteResult.postValue(Resource.success(null))
+            } catch (e: Exception) {
+                updateNoteResult.postValue(Resource.error(e.message.toString(), null))
+            }
+        }
+    }
+
 
     fun onBack(){
         getNavigator()?.onBack()
