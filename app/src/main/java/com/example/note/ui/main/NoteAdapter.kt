@@ -50,7 +50,7 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
             mBinding.root.setOnLongClickListener {
                 notes[position].isSelected = true
-                mListener?.onItemLongClick(notes[position])
+                mListener?.onItemLongClick()
                 notifyDataSetChanged()
                 true
             }
@@ -75,6 +75,6 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClick(note: Note, position: Int)
-        fun onItemLongClick(note: Note)
+        fun onItemLongClick()
     }
 }

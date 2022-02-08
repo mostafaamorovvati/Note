@@ -108,7 +108,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
 
-    override fun onItemLongClick(note: Note) {
+    override fun onItemLongClick() {
         mBinding.btnDelete.visible()
     }
 
