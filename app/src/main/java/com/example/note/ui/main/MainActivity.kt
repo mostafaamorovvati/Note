@@ -5,15 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mvvmproject.utils.Status
 import com.example.note.BR
 import com.example.note.R
+import com.example.note.data.local.room.entities.Note
 import com.example.note.databinding.ActivityMainBinding
 import com.example.note.ui.add.AddNoteActivity
 import com.example.note.ui.base.BaseActivity
+import com.example.note.ui.dialog.NoteDialog
+import com.example.note.ui.dialog.NoteDialogNavigator
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
 
 @KoinApiExtension
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNavigator {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
+    MainNavigator,
+    NoteAdapter.OnItemLongClick {
 
     private val mNoteAdapter: NoteAdapter by inject()
     private val mViewModel: MainViewModel by viewModel()
@@ -49,6 +54,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 
     private fun setupNoteList() {
         mBinding.noteList.apply {
+            mNoteAdapter.mListener = this@MainActivity
             adapter = mNoteAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
         }
@@ -63,6 +69,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), MainNav
 
     override fun openAddNotePage() {
         startActivity(AddNoteActivity.openActivity(this))
+    }
+
+    override fun onLongClick(note: Note) {
+    NoteDialog(
+            "Are you sure delete the ${note.title}?",
+            getString(R.string.delete_txt),
+            object : NoteDialogNavigator {
+                override fun ok() {
+                    mViewModel.deleteNote(note)
+                }
+
+                override fun cancel() {
+
+                }
+            }
+        ).show(supportFragmentManager, "")
     }
 
 }

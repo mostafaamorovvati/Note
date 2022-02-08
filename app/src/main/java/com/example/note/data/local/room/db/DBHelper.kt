@@ -8,4 +8,6 @@ class DBHelper(private val db: NoteDataBase) : IDBHelper {
 
     override suspend fun getNotes() = db.noteDao().getNotes()
 
+    override suspend fun deleteNote(note: Note) = db.noteDao().deleteNote(note)
+
 }

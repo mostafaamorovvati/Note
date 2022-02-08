@@ -35,7 +35,13 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
         }
     }
 
-    fun openAddNotePage(){
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            repo.deleteNote(note)
+        }
+    }
+
+    fun openAddNotePage() {
         getNavigator()?.openAddNotePage()
     }
 

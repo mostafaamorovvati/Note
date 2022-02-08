@@ -41,7 +41,10 @@ class NoteDialog(
         return mBinding.root
     }
 
-    override fun ok() = mListener.ok()
+    override fun ok() {
+        mListener.ok()
+        dismissAllowingStateLoss()
+    }
 
     override fun cancel() = dismissAllowingStateLoss()
 }
