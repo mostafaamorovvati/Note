@@ -20,6 +20,9 @@
 
     <dimen name="min_height">40dp</dimen>
 
+    <dimen name="item_selected_icon_size">20dp</dimen>
+
+
 
 
 

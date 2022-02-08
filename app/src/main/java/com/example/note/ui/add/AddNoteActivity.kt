@@ -106,6 +106,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             note?.title = edtTitle.text.toString().trim()
             note?.content = edtContent.text.toString().trim()
             note?.date = Date().toString()
+            note?.isSelected = false
 
             note?.let { mViewModel.updateNote(it) }
             this@AddNoteActivity.toast(getString(R.string.note_uodated_txt))
@@ -127,6 +128,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                 title = edtTitle.text.toString().trim(),
                 content = edtContent.text.toString().trim(),
                 date = Date().toString(),
+                isSelected = false
             )
             mViewModel.saveNote(note)
             this@AddNoteActivity.toast(getString(R.string.note_saved_txt))

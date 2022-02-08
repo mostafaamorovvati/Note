@@ -4,4 +4,6 @@ interface MainNavigator {
 
     fun openAddNotePage()
 
+    fun onDeleteBtnClick()
+
 }

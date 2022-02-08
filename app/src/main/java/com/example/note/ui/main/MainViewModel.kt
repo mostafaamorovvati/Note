@@ -45,4 +45,8 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
         getNavigator()?.openAddNotePage()
     }
 
+    fun onDeleteBtnClick(){
+        getNavigator()?.onDeleteBtnClick()
+    }
+
 }

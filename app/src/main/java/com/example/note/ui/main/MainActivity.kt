@@ -13,6 +13,8 @@ import com.example.note.ui.add.AddNoteActivity.Companion.IS_NOTE_SAVED_OR_UPDATE
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
+import com.example.note.utils.gone
+import com.example.note.utils.visible
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
@@ -89,19 +91,42 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         activityResultLauncher.launch(AddNoteActivity.openActivity(this, null, false))
     }
 
-    override fun onItemClick(note: Note) {
-        activityResultLauncher.launch(AddNoteActivity.openActivity(this, note, true))
+    override fun onDeleteBtnClick() {
+        showDeleteItemDialog(mNoteAdapter.getSelectedItem())
+    }
+
+    override fun onItemClick(note: Note, position: Int) {
+
+        if (mNoteAdapter.getSelectedItem().isEmpty()) {
+            activityResultLauncher.launch(AddNoteActivity.openActivity(this, note, true))
+        } else {
+            val notes = mNoteAdapter.getNotesList()
+            notes[position].isSelected = !notes[position].isSelected
+            if (mNoteAdapter.getSelectedItem().isEmpty())
+                mBinding.btnDelete.gone()
+        }
     }
 
 
     override fun onItemLongClick(note: Note) {
+        mBinding.btnDelete.visible()
+    }
+
+
+    private fun showDeleteItemDialog(notes: MutableList<Note>) {
         NoteDialog(
-            "Are you sure delete the ${note.title}?",
+            if (mNoteAdapter.getSelectedItem().size > 1)
+                "Are you sure delete this items?"
+            else
+                "Are you sure delete the ${notes[0].title}?",
             getString(R.string.delete_txt),
             object : NoteDialogNavigator {
                 override fun ok() {
-                    mViewModel.deleteNote(note)
-                    mViewModel.getNotes()
+                    for (i in notes) {
+                        mViewModel.deleteNote(i)
+                        mNoteAdapter.deleteSelectedList(i)
+                    }
+                    mBinding.btnDelete.gone()
                 }
 
                 override fun cancel() {
