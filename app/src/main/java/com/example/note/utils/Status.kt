@@ -1,4 +1,4 @@
-package com.example.mvvmproject.utils
+package com.example.note.utils
 
 enum class Status {
     SUCCESS,

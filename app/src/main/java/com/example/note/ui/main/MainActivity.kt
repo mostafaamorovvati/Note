@@ -3,13 +3,13 @@ package com.example.note.ui.main
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mvvmproject.utils.Status
+import com.example.note.utils.Status
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
 import com.example.note.databinding.ActivityMainBinding
 import com.example.note.ui.add.AddNoteActivity
-import com.example.note.ui.add.AddNoteActivity.Companion.IS_NOTE_SAVED
+import com.example.note.ui.add.AddNoteActivity.Companion.IS_NOTE_SAVED_OR_UPDATE
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
@@ -31,8 +31,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             if (it.resultCode == RESULT_OK) {
                 val data = it.data
                 if (data != null) {
-
-                    val isNoteSaved = data.getBooleanExtra(IS_NOTE_SAVED, false)
+                    val isNoteSaved = data.getBooleanExtra(IS_NOTE_SAVED_OR_UPDATE, false)
 
                     if (isNoteSaved)
                         mViewModel.getNotes()
@@ -69,6 +68,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
         })
     }
+
 
     private fun setupNoteList() {
         mBinding.noteList.apply {

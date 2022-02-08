@@ -3,7 +3,6 @@ package com.example.note.ui.add
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import com.example.mvvmproject.utils.Status
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
@@ -28,7 +27,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
 
     companion object {
 
-        const val IS_NOTE_SAVED = "is_note_saved"
+        const val IS_NOTE_SAVED_OR_UPDATE = "is_note_saved_or_update"
 
         private const val NOTE_KEY = "note_key"
         private const val IS_UPDATE = "is_update"
@@ -53,8 +52,6 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         mViewModel.setNavigator(this)
 
         getExtras()
-        saveNoteObserver()
-        updateNoteObserver()
     }
 
 
@@ -69,49 +66,10 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         }
     }
 
-    private fun saveNoteObserver() {
-        mViewModel.saveNoteResult.observe(this, {
-            it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        this@AddNoteActivity.toast(getString(R.string.note_saved_txt))
-                        setResult()
-                        finish()
-                    }
-                    Status.ERROR -> {
-
-                    }
-                    Status.LOADING -> {
-
-                    }
-                }
-            }
-        })
-    }
-
-    private fun updateNoteObserver() {
-        mViewModel.updateNoteResult.observe(this, {
-            it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        this@AddNoteActivity.toast(getString(R.string.note_uodated_txt))
-                        setResult()
-                        finish()
-                    }
-                    Status.ERROR -> {
-
-                    }
-                    Status.LOADING -> {
-
-                    }
-                }
-            }
-        })
-    }
 
     private fun setResult() {
         val intent = Intent()
-        intent.putExtra(IS_NOTE_SAVED, true)
+        intent.putExtra(IS_NOTE_SAVED_OR_UPDATE, true)
         setResult(RESULT_OK, intent)
     }
 
@@ -150,6 +108,9 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             note?.date = Date().toString()
 
             note?.let { mViewModel.updateNote(it) }
+            this@AddNoteActivity.toast(getString(R.string.note_uodated_txt))
+            setResult()
+            finish()
         }
     }
 
@@ -168,14 +129,26 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                 date = Date().toString(),
             )
             mViewModel.saveNote(note)
+            this@AddNoteActivity.toast(getString(R.string.note_saved_txt))
+            setResult()
+            finish()
         }
     }
 
     private fun exit() {
-        if (mBinding.edtTitle.text.isNullOrEmpty() && mBinding.edtContent.text.isNullOrEmpty()) {
+        val title = mBinding.edtTitle.text.toString().trim()
+        val content = mBinding.edtContent.text.toString().trim()
+
+        if (title.isEmpty() && content.isEmpty()) {
             finish()
             return
         }
+
+        if (isUpdate && title == note?.title && content == note?.content) {
+            finish()
+            return
+        }
+
         NoteDialog(
             getString(R.string.exit_add_new_note_message_txt),
             getString(R.string.ok_txt),

@@ -2,7 +2,7 @@ package com.example.note.ui.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.mvvmproject.utils.Resource
+import com.example.note.utils.Resource
 import com.example.note.data.local.room.entities.Note
 import com.example.note.data.repository.MainRepository
 import com.example.note.ui.base.BaseViewModel
