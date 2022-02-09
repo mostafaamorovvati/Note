@@ -58,13 +58,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             it?.let {
                 when (it.status) {
                     Status.SUCCESS -> {
+                        mBinding.noteList.visible()
+                        mBinding.fab.visible()
+                        mBinding.progressBar.gone()
                         mNoteAdapter.setData(it.data?.toMutableList() ?: mutableListOf())
                     }
                     Status.ERROR -> {
-
+                        mBinding.noteList.gone()
+                        mBinding.progressBar.gone()
+                        mBinding.fab.visible()
                     }
                     Status.LOADING -> {
-
+                        mBinding.noteList.gone()
+                        mBinding.fab.gone()
+                        mBinding.progressBar.visible()
                     }
                 }
             }
@@ -142,8 +149,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
         ).show(supportFragmentManager, "")
     }
-
-
 
 
 }

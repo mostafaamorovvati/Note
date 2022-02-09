@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
-import com.bumptech.glide.Glide
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
@@ -13,13 +12,12 @@ import com.example.note.databinding.ActivityAddNoteBinding
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
-import com.example.note.utils.gone
-import com.example.note.utils.invisible
-import com.example.note.utils.toast
-import com.example.note.utils.visible
+import com.example.note.utils.*
+import com.squareup.picasso.Picasso
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
 import java.util.*
+
 
 @KoinApiExtension
 class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>(),
@@ -31,7 +29,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
     private var isUpdate = false
     private var imageUri: Uri? = null
 
-    private val getImageResult =
+    private val getImageFromGallery =
         registerForActivityResult(ActivityResultContracts.GetContent()) {
 
             if (it != null) {
@@ -79,20 +77,27 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
     private fun getExtras() {
         if (intent != null) {
             mBinding.apply {
+
                 note = intent.getParcelableExtra(NOTE_KEY)
                 edtTitle.setText(note?.title)
                 edtContent.setText(note?.content)
                 isUpdate = intent.getBooleanExtra(IS_UPDATE, false)
                 imageUri = Uri.parse(note?.image ?: "")
+
+
+
                 if (note?.image != null) {
                     imageContainer.visible()
                     btnRemoveImage.visible()
-                    Glide
-                        .with(this@AddNoteActivity)
+
+                    Picasso
+                        .get()
                         .load(imageUri)
+                        .placeholder(R.drawable.ic_launcher_background)
                         .into(imageView)
+
                 } else {
-                    imageContainer.gone()
+                    imageContainer.invisible()
                     btnRemoveImage.gone()
                 }
             }
@@ -129,7 +134,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
     }
 
     override fun openGallery() {
-        getImageResult.launch("image/*")
+        getImageFromGallery.launch("image/*")
     }
 
     override fun removeImage() {

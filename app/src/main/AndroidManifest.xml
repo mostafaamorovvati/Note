@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.note">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:name=".app.MainApplication"
         android:allowBackup="true"
@@ -24,6 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

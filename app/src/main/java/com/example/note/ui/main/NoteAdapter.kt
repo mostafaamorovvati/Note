@@ -2,13 +2,10 @@ package com.example.note.ui.main
 
 import android.annotation.SuppressLint
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.note.data.local.room.entities.Note
 import com.example.note.databinding.NoteItemLayoutBinding
 import com.example.note.ui.base.BaseViewHolder
@@ -51,15 +48,6 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
                 }
 
 
-                if (notes[position].image != null) {
-                    ivImage.visible()
-                    Glide
-                        .with(ivImage.context)
-                        .load(Uri.parse(notes[position].image))
-                        .into(ivImage)
-                } else
-                    ivImage.gone()
-
 
                 root.setOnClickListener {
                     mListener?.onItemClick(notes[position], position)
@@ -74,15 +62,12 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
                 }
             }
         }
-
-
-
-
     }
 
     fun getNotesList() = notes.toMutableList()
 
     fun getSelectedItem() = notes.filter { it.isSelected }.toMutableList()
+
 
     @SuppressLint("NotifyDataSetChanged")
     fun deleteSelectedList(note: Note) {
