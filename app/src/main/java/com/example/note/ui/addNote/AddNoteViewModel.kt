@@ -1,4 +1,4 @@
-package com.example.note.ui.add
+package com.example.note.ui.addNote
 
 import androidx.lifecycle.viewModelScope
 import com.example.note.data.local.room.entities.Note

@@ -1,4 +1,4 @@
-package com.example.note.ui.add
+package com.example.note.ui.addNote
 
 import android.content.Intent
 import android.os.Bundle

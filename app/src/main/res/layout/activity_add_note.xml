@@ -7,13 +7,13 @@
 
         <variable
             name="AddNoteViewModel"
-            type="com.example.note.ui.add.AddNoteViewModel" />
+            type="com.example.note.ui.addNote.AddNoteViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.add.AddNoteActivity">
+        tools:context=".ui.addNote.AddNoteActivity">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnBack"

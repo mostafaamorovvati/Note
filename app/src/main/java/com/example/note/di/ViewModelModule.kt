@@ -1,6 +1,6 @@
 package com.example.note.di
 
-import com.example.note.ui.add.AddNoteViewModel
+import com.example.note.ui.addNote.AddNoteViewModel
 import com.example.note.ui.dialog.NoteDialogViewModel
 import com.example.note.ui.main.MainViewModel
 import org.koin.android.viewmodel.dsl.viewModel

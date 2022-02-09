@@ -8,13 +8,11 @@ import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
 import com.example.note.databinding.ActivityMainBinding
-import com.example.note.ui.add.AddNoteActivity
-import com.example.note.ui.add.AddNoteActivity.Companion.IS_NOTE_SAVED_OR_UPDATE
+import com.example.note.ui.addNote.AddNoteActivity
+import com.example.note.ui.addNote.AddNoteActivity.Companion.IS_NOTE_SAVED_OR_UPDATE
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
-import com.example.note.utils.gone
-import com.example.note.utils.visible
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
@@ -89,6 +87,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun openAddNotePage() {
         activityResultLauncher.launch(AddNoteActivity.openActivity(this, null, false))
+        mNoteAdapter.unselectedItems()
+        mBinding.btnDelete.gone()
     }
 
     override fun onDeleteBtnClick() {
@@ -116,9 +116,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private fun showDeleteItemDialog(notes: MutableList<Note>) {
         NoteDialog(
             if (mNoteAdapter.getSelectedItem().size > 1)
-                "Are you sure delete this items?"
+                "Are you sure you want to delete these items?"
             else
-                "Are you sure delete the ${notes[0].title}?",
+                "Do you want to delete the ${notes[0].title}?",
             getString(R.string.delete_txt),
             object : NoteDialogNavigator {
                 override fun ok() {

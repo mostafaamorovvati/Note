@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Note">
         <activity
-            android:name=".ui.add.AddNoteActivity"
+            android:name=".ui.addNote.AddNoteActivity"
             android:exported="false" />
         <activity
             android:name=".ui.main.MainActivity"

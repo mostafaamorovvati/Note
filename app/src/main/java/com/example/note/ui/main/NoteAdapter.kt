@@ -73,6 +73,13 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun unselectedItems(){
+        for (i in notes){
+            i.isSelected = false
+        }
+    }
+
+
     interface OnItemClickListener {
         fun onItemClick(note: Note, position: Int)
         fun onItemLongClick()
