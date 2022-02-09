@@ -13,7 +13,7 @@ data class Note(
     var title: String,
     var content: String,
     var date: String,
-    var image: Int? = null,
+    var image: String? = null,
     var isSelected: Boolean = false
 
 ) : Parcelable

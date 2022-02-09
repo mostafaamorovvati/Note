@@ -1,8 +1,11 @@
 package com.example.note.ui.addNote
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentActivity
+import com.bumptech.glide.Glide
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
@@ -10,7 +13,10 @@ import com.example.note.databinding.ActivityAddNoteBinding
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
+import com.example.note.utils.gone
+import com.example.note.utils.invisible
 import com.example.note.utils.toast
+import com.example.note.utils.visible
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
 import java.util.*
@@ -23,6 +29,21 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
     private lateinit var mBinding: ActivityAddNoteBinding
     private var note: Note? = null
     private var isUpdate = false
+    private var imageUri: Uri? = null
+
+    private val getImageResult =
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
+
+            if (it != null) {
+                mBinding.apply {
+                    imageContainer.visible()
+                    btnRemoveImage.visible()
+                    imageView.setImageURI(it)
+                    imageUri = it
+                }
+            }
+
+        }
 
 
     companion object {
@@ -62,6 +83,18 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                 edtTitle.setText(note?.title)
                 edtContent.setText(note?.content)
                 isUpdate = intent.getBooleanExtra(IS_UPDATE, false)
+                imageUri = Uri.parse(note?.image ?: "")
+                if (note?.image != null) {
+                    imageContainer.visible()
+                    btnRemoveImage.visible()
+                    Glide
+                        .with(this@AddNoteActivity)
+                        .load(imageUri)
+                        .into(imageView)
+                } else {
+                    imageContainer.gone()
+                    btnRemoveImage.gone()
+                }
             }
         }
     }
@@ -95,6 +128,18 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             saveNote()
     }
 
+    override fun openGallery() {
+        getImageResult.launch("image/*")
+    }
+
+    override fun removeImage() {
+        mBinding.apply {
+            imageView.setImageURI(null)
+            imageContainer.invisible()
+            btnRemoveImage.gone()
+        }
+    }
+
     private fun updateNote() {
         mBinding.apply {
 
@@ -106,6 +151,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             note?.title = edtTitle.text.toString().trim()
             note?.content = edtContent.text.toString().trim()
             note?.date = Date().toString()
+            note?.image = if (imageUri.toString().isEmpty()) null else imageUri.toString()
             note?.isSelected = false
 
             note?.let { mViewModel.updateNote(it) }
@@ -128,6 +174,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                 title = edtTitle.text.toString().trim(),
                 content = edtContent.text.toString().trim(),
                 date = Date().toString(),
+                image = if (imageUri.toString().isEmpty()) null else imageUri.toString(),
                 isSelected = false
             )
             mViewModel.saveNote(note)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,16 +10,19 @@
             type="com.example.note.ui.main.NoteItemViewModel" />
     </data>
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/root"
-        android:layout_width="match_parent"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/small_margin"
-        app:cardCornerRadius="@dimen/small_radius">
+        app:cardCornerRadius="@dimen/medium_radius"
+        app:cardElevation="6dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/standard_margin">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
@@ -27,10 +31,12 @@
                 android:layout_marginStart="@dimen/standard_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:text="@{NoteItemViewModel.title}"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="@dimen/large_text_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Title" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivSelected"
@@ -51,26 +57,46 @@
                 android:layout_marginStart="@dimen/standard_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/standard_margin"
-                android:ellipsize="end"
                 android:gravity="start"
-                android:lines="2"
                 android:text="@{NoteItemViewModel.content}"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="@dimen/medium_text_size"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+                app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                tools:text="Content" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivImage"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginStart="@dimen/standard_margin"
                 android:layout_marginTop="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/standard_margin"
                 android:layout_marginBottom="@dimen/small_margin"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvContent" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/standard_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/standard_margin"
+                android:gravity="end"
                 android:text="@{NoteItemViewModel.date}"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="@dimen/small_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvContent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivImage"
+                tools:text="24/12/2021" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

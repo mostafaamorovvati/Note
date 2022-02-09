@@ -1,9 +1,10 @@
 package com.example.note.ui.main
 
 import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.note.utils.Status
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
@@ -13,6 +14,7 @@ import com.example.note.ui.addNote.AddNoteActivity.Companion.IS_NOTE_SAVED_OR_UP
 import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
+import com.example.note.utils.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
@@ -74,7 +76,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         mBinding.noteList.apply {
             mNoteAdapter.mListener = this@MainActivity
             adapter = mNoteAdapter
-            layoutManager = LinearLayoutManager(this@MainActivity)
+            val staggeredLayoutManager =
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            staggeredLayoutManager.gapStrategy =
+                StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+            layoutManager = staggeredLayoutManager
         }
     }
 
@@ -88,7 +94,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     override fun openAddNotePage() {
         activityResultLauncher.launch(AddNoteActivity.openActivity(this, null, false))
         mNoteAdapter.unselectedItems()
-        mBinding.btnDelete.gone()
+        mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
     }
 
     override fun onDeleteBtnClick() {
@@ -103,13 +109,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             val notes = mNoteAdapter.getNotesList()
             notes[position].isSelected = !notes[position].isSelected
             if (mNoteAdapter.getSelectedItem().isEmpty())
-                mBinding.btnDelete.gone()
+                mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
         }
     }
 
 
     override fun onItemLongClick() {
         mBinding.btnDelete.visible()
+        mBinding.btnDelete.startAnimation(showAnimation())
     }
 
 
@@ -126,7 +133,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                         mViewModel.deleteNote(i)
                         mNoteAdapter.deleteSelectedList(i)
                     }
-                    mBinding.btnDelete.gone()
+                    mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
                 }
 
                 override fun cancel() {
@@ -135,6 +142,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             }
         ).show(supportFragmentManager, "")
     }
+
+
 
 
 }

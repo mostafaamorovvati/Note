@@ -1,14 +1,18 @@
 package com.example.note.ui.main
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.note.data.local.room.entities.Note
 import com.example.note.databinding.NoteItemLayoutBinding
 import com.example.note.ui.base.BaseViewHolder
-import com.example.note.utils.gone
-import com.example.note.utils.visible
+import com.example.note.utils.*
 
 class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
@@ -33,28 +37,47 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         BaseViewHolder(mBinding.root) {
         @SuppressLint("NotifyDataSetChanged")
         override fun onBind(position: Int) {
-            val itemViewModel = NoteItemViewModel(notes[position])
-            mBinding.noteItemViewModel = itemViewModel
-            mBinding.executePendingBindings()
+            mBinding.apply {
+                val itemViewModel = NoteItemViewModel(notes[position])
+                noteItemViewModel = itemViewModel
+                executePendingBindings()
 
-            if (notes[position].isSelected)
-                mBinding.ivSelected.visible()
-            else
-                mBinding.ivSelected.gone()
+                if (notes[position].isSelected) {
+                    ivSelected.visible()
+                    ivSelected.startAnimation(showAnimation())
+                    root.startAnimation(repeatAnimation())
+                } else {
+                    ivSelected.startAnimation(hideAnimation(ivSelected))
+                }
 
 
-            mBinding.root.setOnClickListener {
-                mListener?.onItemClick(notes[position], position)
-                notifyDataSetChanged()
-            }
+                if (notes[position].image != null) {
+                    ivImage.visible()
+                    Glide
+                        .with(ivImage.context)
+                        .load(Uri.parse(notes[position].image))
+                        .into(ivImage)
+                } else
+                    ivImage.gone()
 
-            mBinding.root.setOnLongClickListener {
-                notes[position].isSelected = true
-                mListener?.onItemLongClick()
-                notifyDataSetChanged()
-                true
+
+                root.setOnClickListener {
+                    mListener?.onItemClick(notes[position], position)
+                    notifyItemChanged(position)
+                }
+
+                root.setOnLongClickListener {
+                    notes[position].isSelected = true
+                    mListener?.onItemLongClick()
+                    notifyItemChanged(position)
+                    true
+                }
             }
         }
+
+
+
+
     }
 
     fun getNotesList() = notes.toMutableList()
@@ -73,10 +96,12 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun unselectedItems(){
-        for (i in notes){
+    @SuppressLint("NotifyDataSetChanged")
+    fun unselectedItems() {
+        for (i in notes) {
             i.isSelected = false
         }
+        notifyDataSetChanged()
     }
 
 
@@ -84,4 +109,6 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         fun onItemClick(note: Note, position: Int)
         fun onItemLongClick()
     }
+
+
 }

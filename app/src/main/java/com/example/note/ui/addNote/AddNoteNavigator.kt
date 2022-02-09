@@ -6,4 +6,8 @@ interface AddNoteNavigator {
 
     fun onSave()
 
+    fun openGallery()
+
+    fun removeImage()
+
 }

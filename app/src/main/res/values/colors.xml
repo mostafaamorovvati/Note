@@ -1,17 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- APP COLORS -->
+    <color name="primaryColor">#F89A01</color>
+    <color name="primaryColorVariant">#C67B01</color>
+    <color name="secondaryColor">#1A8CE7</color>
+    <color name="secondaryColorVariant">#1570B9</color>
+    <color name="successColor">#00AD7C</color>
+    <color name="successColorVariant">#008A63</color>
+    <color name="dangerColor50">#FEEDEC</color>
+    <color name="dangerColor">#F54D42</color>
+    <color name="dangerColorVariant">#C43E35</color>
+    <color name="infoColor">#1A8CE7</color>
+    <color name="infoColorVariant">#1570B9</color>
+    <color name="warningColor">#FFBA00</color>
+    <color name="warningColorVariant">#CC9500</color>
+
+    <!-- TEXT COLORS -->
+    <color name="primaryTextColor">#26373B</color>
+    <color name="secondaryTextColor">#6B8289</color>
+    <color name="invertTextColor">#FFFFFF</color>
+    <color name="priceTextColor">#26373B</color>
+
+    <!-- BACKGROUND COLORS -->
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="backgroundColorVariant">#FAFAFA</color>
+    <color name="backgroundColorVariant2">#F5F5F5</color>
+
+    <!--STROKE COLORS -->
+    <color name="strokeColor">#D6D6D6</color>
+    <color name="strokeColorVariant">#E8E8E8</color>
+
+    <!-- OTHER COLORS -->
+    <color name="bluePurpleColor">#48C6EF</color>
+    <color name="flashDealColor">#6E56EC</color>
+    <color name="specialSaleColor">#F95959</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
-    <color name="primary_color">#8BC34A</color>
-    <color name="secondary_color">#4CAF50</color>
-    <color name="hint_color">#AED186</color>
-    <color name="text_color">#366108</color>
-    <color name="gray_color">#D0D1CF</color>
-
 </resources>
