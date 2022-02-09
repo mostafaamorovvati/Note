@@ -132,7 +132,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             if (mNoteAdapter.getSelectedItem().size > 1)
                 "Are you sure you want to delete these items?"
             else
-                "Do you want to delete the ${notes[0].title}?",
+                "Do you want to delete the \"${notes[0].title}\"?",
             getString(R.string.delete_txt),
             object : NoteDialogNavigator {
                 override fun ok() {
@@ -148,6 +148,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 }
             }
         ).show(supportFragmentManager, "")
+    }
+
+
+    override fun onBackPressed() {
+        if (mNoteAdapter.getSelectedItem().size > 0) {
+            mNoteAdapter.unselectedItems()
+            mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
+        } else
+            super.onBackPressed()
     }
 
 

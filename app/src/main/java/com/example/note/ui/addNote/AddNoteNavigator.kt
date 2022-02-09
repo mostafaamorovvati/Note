@@ -8,6 +8,5 @@ interface AddNoteNavigator {
 
     fun openGallery()
 
-    fun removeImage()
 
 }

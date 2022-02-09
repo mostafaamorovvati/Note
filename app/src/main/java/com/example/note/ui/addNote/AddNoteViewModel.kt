@@ -45,8 +45,5 @@ class AddNoteViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddN
         getNavigator()?.openGallery()
     }
 
-    fun removeImage(){
-        getNavigator()?.removeImage()
-    }
 
 }

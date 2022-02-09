@@ -35,7 +35,6 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             if (it != null) {
                 mBinding.apply {
                     imageContainer.visible()
-                    btnRemoveImage.visible()
                     imageView.setImageURI(it)
                     imageUri = it
                 }
@@ -88,7 +87,6 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
 
                 if (note?.image != null) {
                     imageContainer.visible()
-                    btnRemoveImage.visible()
 
                     Picasso
                         .get()
@@ -96,10 +94,9 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(imageView)
 
-                } else {
+                } else
                     imageContainer.invisible()
-                    btnRemoveImage.gone()
-                }
+
             }
         }
     }
@@ -137,13 +134,6 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         getImageFromGallery.launch("image/*")
     }
 
-    override fun removeImage() {
-        mBinding.apply {
-            imageView.setImageURI(null)
-            imageContainer.invisible()
-            btnRemoveImage.gone()
-        }
-    }
 
     private fun updateNote() {
         mBinding.apply {
