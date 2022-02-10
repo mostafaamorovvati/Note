@@ -84,13 +84,12 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                 imageUri = Uri.parse(note?.image ?: "")
 
 
-
                 if (note?.image != null) {
                     imageContainer.visible()
 
                     Picasso
                         .get()
-                        .load(imageUri)
+                        .load(note?.image)
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(imageView)
 
@@ -107,6 +106,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         intent.putExtra(IS_NOTE_SAVED_OR_UPDATE, true)
         setResult(RESULT_OK, intent)
     }
+
 
     override fun getBindingVariable() = BR.AddNoteViewModel
 
@@ -194,7 +194,10 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
         }
 
         NoteDialog(
-            getString(R.string.exit_add_new_note_message_txt),
+            if (isUpdate)
+                getString(R.string.exit_update_new_note_message_txt)
+            else
+                getString(R.string.exit_save_new_note_message_txt),
             getString(R.string.ok_txt),
             object : NoteDialogNavigator {
 

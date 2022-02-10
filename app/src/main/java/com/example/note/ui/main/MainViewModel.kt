@@ -25,10 +25,7 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
         viewModelScope.launch {
             try {
                 val note = repo.getNotes()
-                if (note.isNullOrEmpty()) {
-                    Resource.error("list is null or empty", null)
-                } else
-                    notes.postValue(Resource.success(note))
+                notes.postValue(Resource.success(note))
             } catch (e: Exception) {
                 notes.postValue(Resource.error(e.message.toString(), null))
             }
@@ -45,7 +42,7 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
         getNavigator()?.openAddNotePage()
     }
 
-    fun onDeleteBtnClick(){
+    fun onDeleteBtnClick() {
         getNavigator()?.onDeleteBtnClick()
     }
 

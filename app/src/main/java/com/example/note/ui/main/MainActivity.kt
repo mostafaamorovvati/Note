@@ -1,8 +1,6 @@
 package com.example.note.ui.main
 
 import android.os.Bundle
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.note.BR
@@ -100,8 +98,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
     override fun openAddNotePage() {
         activityResultLauncher.launch(AddNoteActivity.openActivity(this, null, false))
-        mNoteAdapter.unselectedItems()
-        mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
+        if (mNoteAdapter.getSelectedItem().size > 0) {
+            mNoteAdapter.unselectedItems()
+            mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
+        }
     }
 
     override fun onDeleteBtnClick() {
@@ -130,7 +130,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private fun showDeleteItemDialog(notes: MutableList<Note>) {
         NoteDialog(
             if (mNoteAdapter.getSelectedItem().size > 1)
-                "Are you sure you want to delete these items?"
+                getString(R.string.delete_multi_item_message_txt)
             else
                 "Do you want to delete the \"${notes[0].title}\"?",
             getString(R.string.delete_txt),

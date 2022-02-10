@@ -1,8 +1,6 @@
 package com.example.note.ui.main
 
 import android.annotation.SuppressLint
-import android.net.Uri
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -44,10 +42,8 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
                     ivSelected.startAnimation(showAnimation())
                     root.startAnimation(repeatAnimation())
                 } else {
-                    ivSelected.startAnimation(hideAnimation(ivSelected))
+                    ivSelected.gone()
                 }
-
-
 
                 root.setOnClickListener {
                     mListener?.onItemClick(notes[position], position)

@@ -6,8 +6,10 @@
     <string name="cancel_txt">Cancel</string>
     <string name="delete_txt">Delete</string>
     <string name="ok_txt">OK</string>
-    <string name="exit_add_new_note_message_txt">Your note will not be saved if you exit!</string>
+    <string name="exit_save_new_note_message_txt">Your note will not be saved if you exit!</string>
+    <string name="exit_update_new_note_message_txt">Your note will not be update if you exit!</string>
     <string name="fill_field_txt">Please fill title and content</string>
     <string name="note_uodated_txt">Note updated</string>
     <string name="note_saved_txt">Note saved</string>
+    <string name="delete_multi_item_message_txt">Are you sure you want to delete these items?</string>
 </resources>
