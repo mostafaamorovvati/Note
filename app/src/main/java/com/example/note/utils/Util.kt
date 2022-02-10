@@ -1,5 +1,6 @@
 package com.example.note.utils
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -8,6 +9,10 @@ import android.view.animation.ScaleAnimation
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import java.text.DateFormat
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun log(message: String) {
     Log.d(LOG_TAG, message)

@@ -12,7 +12,7 @@ class NoteItemViewModel(
 
     fun getContent(): String = note.content
 
-    fun getDate(): String = note.date
+    fun getDate(): String = note.date.substring(0, 19)
 
     fun getNoteImage(): String {
         return note.image ?: ""
