@@ -41,9 +41,12 @@ class AddNoteViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddN
         getNavigator()?.onSave()
     }
 
-    fun openGallery(){
+    fun openGallery() {
         getNavigator()?.openGallery()
     }
 
+    fun removeImage() {
+        getNavigator()?.removeImage()
+    }
 
 }

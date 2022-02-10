@@ -1,9 +1,15 @@
 package com.example.note.ui.addNote
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.note.BR
 import com.example.note.R
@@ -35,6 +41,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             if (it != null) {
                 mBinding.apply {
                     imageContainer.visible()
+                    btnRemoveImage.visible()
                     imageView.setImageURI(it)
                     imageUri = it
                 }
@@ -47,6 +54,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
 
         const val IS_NOTE_SAVED_OR_UPDATE = "is_note_saved_or_update"
 
+        private const val PERMISSION_REQUEST_CODE = 10
         private const val NOTE_KEY = "note_key"
         private const val IS_UPDATE = "is_update"
 
@@ -86,6 +94,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
 
                 if (note?.image != null) {
                     imageContainer.visible()
+                    btnRemoveImage.visible()
 
                     Picasso
                         .get()
@@ -93,9 +102,10 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                         .placeholder(R.drawable.ic_launcher_background)
                         .into(imageView)
 
-                } else
+                } else {
                     imageContainer.invisible()
-
+                    btnRemoveImage.gone()
+                }
             }
         }
     }
@@ -131,7 +141,27 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
     }
 
     override fun openGallery() {
-        getImageFromGallery.launch("image/*")
+        val hasStoragePermission = hasStoragePermission()
+        if (hasStoragePermission) {
+            getImageFromGallery.launch("image/*")
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun removeImage() {
+        mBinding.apply {
+            imageView.setImageURI(null)
+            imageContainer.startAnimation(hideAnimation(imageContainer))
+            btnRemoveImage.startAnimation(hideAnimation(btnRemoveImage))
+            imageUri = null
+        }
     }
 
 
@@ -146,7 +176,7 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
             note?.title = edtTitle.text.toString().trim()
             note?.content = edtContent.text.toString().trim()
             note?.date = Date().toString()
-            note?.image = if (imageUri.toString().isEmpty()) null else imageUri.toString()
+            note?.image = imageUri?.toString()
             note?.isSelected = false
 
             note?.let { mViewModel.updateNote(it) }
@@ -211,6 +241,37 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
 
             }
         ).show(supportFragmentManager, "")
+    }
+
+    private fun hasStoragePermission(): Boolean {
+        val permissionCheckResult = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        return permissionCheckResult == PackageManager.PERMISSION_GRANTED
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.getOrNull(0) == PackageManager.PERMISSION_GRANTED) {
+                getImageFromGallery.launch("image/*")
+            } else {
+                AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.permission_txt))
+                    .setMessage(getString(R.string.permission_rejected_txt))
+                    .setPositiveButton(getString(R.string.ok_txt)) { _, _ ->
+                    }
+                    .setCancelable(false)
+                    .show()
+            }
+        }
+
     }
 
 }

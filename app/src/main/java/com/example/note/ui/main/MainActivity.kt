@@ -54,22 +54,34 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private fun setupNoteObserver() {
         mViewModel.notes.observe(this, {
             it?.let {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        mBinding.noteList.visible()
-                        mBinding.fab.visible()
-                        mBinding.progressBar.gone()
-                        mNoteAdapter.setData(it.data?.toMutableList() ?: mutableListOf())
-                    }
-                    Status.ERROR -> {
-                        mBinding.noteList.gone()
-                        mBinding.progressBar.gone()
-                        mBinding.fab.visible()
-                    }
-                    Status.LOADING -> {
-                        mBinding.noteList.gone()
-                        mBinding.fab.gone()
-                        mBinding.progressBar.visible()
+                mBinding.apply {
+                    when (it.status) {
+                        Status.SUCCESS -> {
+                            fab.visible()
+                            progressBar.gone()
+
+                            if (it.data.isNullOrEmpty()) {
+                                noteList.gone()
+                                emptyMessageContainer.visible()
+                            } else {
+                                noteList.visible()
+                                emptyMessageContainer.gone()
+                                mNoteAdapter.setData(it.data.toMutableList())
+                            }
+
+                        }
+                        Status.ERROR -> {
+                            noteList.gone()
+                            progressBar.gone()
+                            emptyMessageContainer.visible()
+                            fab.visible()
+                        }
+                        Status.LOADING -> {
+                            noteList.gone()
+                            fab.gone()
+                            emptyMessageContainer.gone()
+                            progressBar.visible()
+                        }
                     }
                 }
             }
@@ -141,6 +153,10 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                         mNoteAdapter.deleteSelectedList(i)
                     }
                     mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
+
+                    if (mNoteAdapter.notes.isEmpty())
+                        mViewModel.getNotes()
+
                 }
 
                 override fun cancel() {

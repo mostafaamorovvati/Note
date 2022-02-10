@@ -12,4 +12,8 @@
     <string name="note_uodated_txt">Note updated</string>
     <string name="note_saved_txt">Note saved</string>
     <string name="delete_multi_item_message_txt">Are you sure you want to delete these items?</string>
+    <string name="permission_txt">Permission</string>
+    <string name="permission_rejected_txt">Permission rejected!</string>
+    <string name="empty_list_message_txt">There are no notes to display</string>
+    <string name="remove_image_txt">Remove image</string>
 </resources>
