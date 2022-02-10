@@ -33,20 +33,13 @@ class AddNoteViewModel(private val repo: AddNoteRepository) : BaseViewModel<AddN
     }
 
 
-    fun onBack() {
-        getNavigator()?.onBack()
-    }
+    fun onBack() = getNavigator()?.onBack()
 
-    fun onSave() {
-        getNavigator()?.onSave()
-    }
+    fun onSave() = getNavigator()?.onSave()
 
-    fun openGallery() {
-        getNavigator()?.openGallery()
-    }
+    fun openGallery() = getNavigator()?.openGallery()
 
-    fun removeImage() {
-        getNavigator()?.removeImage()
-    }
+    fun removeImage() = getNavigator()?.removeImage()
+
 
 }

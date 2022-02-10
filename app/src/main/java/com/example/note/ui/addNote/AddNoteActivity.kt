@@ -271,7 +271,5 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                     .show()
             }
         }
-
     }
-
 }

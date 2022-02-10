@@ -174,6 +174,4 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         } else
             super.onBackPressed()
     }
-
-
 }
