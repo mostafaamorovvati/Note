@@ -16,4 +16,5 @@
     <string name="permission_rejected_txt">Permission rejected!</string>
     <string name="empty_list_message_txt">There are no notes to display</string>
     <string name="remove_image_txt">Remove image</string>
+    <string name="search_txt">Search</string>
 </resources>

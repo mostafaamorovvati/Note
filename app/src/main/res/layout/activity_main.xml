@@ -42,11 +42,37 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvTitle" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/edtSearchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/medium_radius"
+            app:cardElevation="6dp"
+            android:layout_marginStart="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/standard_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_txt"
+                android:background="@drawable/bg_edt"
+                android:minHeight="46dp"
+                android:textSize="@dimen/normal_text_size"
+                android:padding="@dimen/standard_margin" />
+
+        </androidx.cardview.widget.CardView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/noteList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_marginTop="@dimen/small_margin"
             android:clipToPadding="false"
             android:foregroundGravity="center"
             android:paddingStart="@dimen/small_margin"
@@ -57,7 +83,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+            app:layout_constraintTop_toBottomOf="@id/edtSearchContainer" />
 
         <LinearLayout
             android:id="@+id/emptyMessageContainer"

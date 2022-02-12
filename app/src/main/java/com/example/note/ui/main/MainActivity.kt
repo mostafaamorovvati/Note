@@ -2,6 +2,7 @@ package com.example.note.ui.main
 
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.note.BR
 import com.example.note.R
@@ -25,6 +26,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     private val mNoteAdapter: NoteAdapter by inject()
     private val mViewModel: MainViewModel by viewModel()
     private lateinit var mBinding: ActivityMainBinding
+    private var notesList: MutableList<Note> = mutableListOf()
 
     private val activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -47,8 +49,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         mBinding = getViewDataBinding()
         mViewModel.setNavigator(this)
 
+
+
         setupNoteObserver()
         setupNoteList()
+
+        mBinding.edtSearch.addTextChangedListener {
+            searchNote(it.toString())
+
+        }
+    }
+
+    private fun searchNote(input: String) {
+        val filteredList: ArrayList<Note> = arrayListOf()
+        for (i in notesList) {
+            if (i.title.contains(input)) {
+                filteredList.add(i)
+            }
+        }
+        mNoteAdapter.setData(filteredList)
     }
 
     private fun setupNoteObserver() {
@@ -62,22 +81,26 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
 
                             if (it.data.isNullOrEmpty()) {
                                 noteList.gone()
+                                edtSearch.gone()
                                 emptyMessageContainer.visible()
                             } else {
                                 noteList.visible()
+                                edtSearch.visible()
                                 emptyMessageContainer.gone()
-                                mNoteAdapter.setData(it.data.toMutableList())
+                                notesList = it.data.toMutableList()
+                                mNoteAdapter.setData(notesList)
                             }
-
                         }
                         Status.ERROR -> {
                             noteList.gone()
+                            edtSearch.gone()
                             progressBar.gone()
                             emptyMessageContainer.visible()
                             fab.visible()
                         }
                         Status.LOADING -> {
                             noteList.gone()
+                            edtSearch.gone()
                             fab.gone()
                             emptyMessageContainer.gone()
                             progressBar.visible()
