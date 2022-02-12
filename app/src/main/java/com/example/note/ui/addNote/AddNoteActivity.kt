@@ -7,10 +7,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.bumptech.glide.Glide
 import com.example.note.BR
 import com.example.note.R
 import com.example.note.data.local.room.entities.Note
@@ -96,11 +98,16 @@ class AddNoteActivity : BaseActivity<ActivityAddNoteBinding, AddNoteViewModel>()
                     imageContainer.visible()
                     btnRemoveImage.visible()
 
-                    Picasso
-                        .get()
-                        .load(note?.image)
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .into(imageView)
+                    try {
+                        Glide
+                            .with(this@AddNoteActivity)
+                            .load(imageUri)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .into(imageView)
+                        Log.d("LOG_TAG", "try: Ok")
+                    } catch (e: Exception) {
+                        Log.d("LOG_TAG", "catch: ${e.message}")
+                    }
 
                 } else {
                     imageContainer.invisible()

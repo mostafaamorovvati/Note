@@ -12,6 +12,9 @@ interface NoteDao {
     @Query("SELECT * FROM note_table ORDER BY `id` DESC")
     suspend fun getNotes(): List<Note>
 
+    @Query("SELECT * from note_table WHERE id = :id")
+    suspend fun getNoteById(id: Int): Note
+
     @Update
     suspend fun updateNote(note: Note)
 
