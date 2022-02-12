@@ -11,7 +11,7 @@ import com.example.note.utils.*
 
 class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
-    var notes: MutableList<Note> = mutableListOf()
+    private var notes: MutableList<Note> = mutableListOf()
     var mListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -66,7 +66,7 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun deleteSelectedList(note: Note) {
+    fun deleteNoteFromList(note: Note) {
         notes.remove(note)
         notifyDataSetChanged()
     }
@@ -84,6 +84,8 @@ class NoteAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
         notifyDataSetChanged()
     }
+
+    fun getNotesSize(): Int = notes.size
 
 
     interface OnItemClickListener {

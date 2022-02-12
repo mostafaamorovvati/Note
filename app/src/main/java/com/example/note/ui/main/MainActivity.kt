@@ -150,11 +150,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                 override fun ok() {
                     for (i in notes) {
                         mViewModel.deleteNote(i)
-                        mNoteAdapter.deleteSelectedList(i)
+                        mNoteAdapter.deleteNoteFromList(i)
                     }
                     mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
 
-                    if (mNoteAdapter.notes.isEmpty())
+                    if (mNoteAdapter.getNotesSize() == 0)
                         mViewModel.getNotes()
 
                 }
