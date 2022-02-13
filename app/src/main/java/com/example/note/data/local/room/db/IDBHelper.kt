@@ -14,4 +14,6 @@ interface IDBHelper {
 
     suspend fun deleteNote(note: Note)
 
+    suspend fun deleteMultiItem(ids: ArrayList<Int>)
+
 }

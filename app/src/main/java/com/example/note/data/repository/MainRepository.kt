@@ -9,4 +9,7 @@ class MainRepository(private val db: IDBHelper) {
 
     suspend fun deleteNote(note: Note) = db.deleteNote(note)
 
+    suspend fun deleteMultiItem(ids: ArrayList<Int>) = db.deleteMultiItem(ids)
+
+
 }

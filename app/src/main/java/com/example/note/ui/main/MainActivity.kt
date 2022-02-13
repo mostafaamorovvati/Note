@@ -49,8 +49,6 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
         mBinding = getViewDataBinding()
         mViewModel.setNavigator(this)
 
-
-
         setupNoteObserver()
         setupNoteList()
 
@@ -171,15 +169,23 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
             getString(R.string.delete_txt),
             object : NoteDialogNavigator {
                 override fun ok() {
-                    for (i in notes) {
-                        mViewModel.deleteNote(i)
-                        mNoteAdapter.deleteNoteFromList(i)
+
+                    if (notes.size > 1) {
+                        val ids = ArrayList<Int>()
+                        for (i in 0 until notes.size) {
+                            ids.add(notes[i].id)
+                            mNoteAdapter.deleteNoteFromList(notes[i])
+                        }
+                        mViewModel.deleteMultiItem(ids)
+                    } else {
+                        mViewModel.deleteNote(notes[0])
+                        mNoteAdapter.deleteNoteFromList(notes[0])
                     }
+
                     mBinding.btnDelete.startAnimation(hideAnimation(mBinding.btnDelete))
 
                     if (mNoteAdapter.getNotesSize() == 0)
                         mViewModel.getNotes()
-
                 }
 
                 override fun cancel() {

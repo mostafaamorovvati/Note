@@ -38,6 +38,13 @@ class MainViewModel(private val repo: MainRepository) : BaseViewModel<MainNaviga
         }
     }
 
+    fun deleteMultiItem(ids: ArrayList<Int>) {
+        viewModelScope.launch {
+            repo.deleteMultiItem(ids)
+        }
+    }
+
+
     fun openAddNotePage() = getNavigator()?.openAddNotePage()
 
 

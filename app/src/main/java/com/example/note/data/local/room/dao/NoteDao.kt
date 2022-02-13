@@ -21,5 +21,8 @@ interface NoteDao {
     @Delete
     suspend fun deleteNote(note: Note)
 
+    @Query("DELETE FROM note_table WHERE id IN (:ids)")
+    suspend fun deleteMultiItem(ids: ArrayList<Int>)
+
 
 }

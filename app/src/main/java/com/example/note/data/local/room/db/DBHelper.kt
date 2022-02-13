@@ -14,5 +14,7 @@ class DBHelper(private val db: NoteDataBase) : IDBHelper {
 
     override suspend fun deleteNote(note: Note) = db.noteDao().deleteNote(note)
 
+    override suspend fun deleteMultiItem(ids: ArrayList<Int>) = db.noteDao().deleteMultiItem(ids)
+
 
 }
