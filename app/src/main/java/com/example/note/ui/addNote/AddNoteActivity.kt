@@ -21,7 +21,6 @@ import com.example.note.ui.base.BaseActivity
 import com.example.note.ui.dialog.NoteDialog
 import com.example.note.ui.dialog.NoteDialogNavigator
 import com.example.note.utils.*
-import com.squareup.picasso.Picasso
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.component.KoinApiExtension
 import java.util.*
