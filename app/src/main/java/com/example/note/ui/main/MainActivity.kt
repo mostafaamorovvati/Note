@@ -69,7 +69,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
     }
 
     private fun setupNoteObserver() {
-        mViewModel.notes.observe(this, {
+        mViewModel.notes.observe(this) {
             it?.let {
                 mBinding.apply {
                     when (it.status) {
@@ -106,7 +106,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(),
                     }
                 }
             }
-        })
+        }
     }
 
 
